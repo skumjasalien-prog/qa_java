@@ -42,7 +42,7 @@ public class LionTest {
         public void testLionMane() throws Exception {
             FelineBehavior mockFeline = mock(FelineBehavior.class);
             Lion lion = new Lion(sex, mockFeline);
-            assertEquals("Для пола " + sex + " наличие гривы должно быть " + expectedHasMane, 
+            assertEquals("Для пола " + sex + " наличие гривы должно быть " + expectedHasMane,
                     expectedHasMane, lion.doesHaveMane());
         }
     }
@@ -67,10 +67,10 @@ public class LionTest {
     @Test
     public void testGetKittens() throws Exception {
         when(felineBehavior.getKittens()).thenReturn(5);
-        
+
         Lion lion = new Lion("Самец", felineBehavior);
         int kittens = lion.getKittens();
-        
+
         assertEquals("Должно вернуться 5 котят", 5, kittens);
         verify(felineBehavior, times(1)).getKittens();
     }
@@ -79,10 +79,10 @@ public class LionTest {
     public void testGetFood() throws Exception {
         List<String> expectedFood = List.of("Животные", "Птицы", "Рыба");
         when(felineBehavior.getFood("Хищник")).thenReturn(expectedFood);
-        
+
         Lion lion = new Lion("Самка", felineBehavior);
         List<String> food = lion.getFood();
-        
+
         assertEquals("Должна вернуться правильная еда", expectedFood, food);
         verify(felineBehavior, times(1)).getFood("Хищник");
     }
@@ -90,32 +90,32 @@ public class LionTest {
     @Test
     public void testGetFoodThrowsException() throws Exception {
         when(felineBehavior.getFood("Хищник")).thenThrow(new Exception("Ошибка получения еды"));
-        
+
         Lion lion = new Lion("Самец", felineBehavior);
-        
+
         try {
             lion.getFood();
             fail("Должно было выброситься исключение");
         } catch (Exception e) {
             assertEquals("Ошибка получения еды", e.getMessage());
         }
-        
+
         verify(felineBehavior, times(1)).getFood("Хищник");
     }
 
     @Test
     public void testGetKittensThrowsException() throws Exception {
         when(felineBehavior.getKittens()).thenThrow(new RuntimeException("Ошибка получения котят"));
-        
+
         Lion lion = new Lion("Самка", felineBehavior);
-        
+
         try {
             lion.getKittens();
             fail("Должно было выброситься исключение");
         } catch (RuntimeException e) {
             assertEquals("Ошибка получения котят", e.getMessage());
         }
-        
+
         verify(felineBehavior, times(1)).getKittens();
     }
 
@@ -142,11 +142,11 @@ public class LionTest {
         public void testLionWithRealFeline() throws Exception {
             Feline realFeline = new Feline();
             Lion lion = new Lion(sex, realFeline);
-            
-            assertEquals("Для пола " + sex + " наличие гривы должно быть " + expectedHasMane, 
+
+            assertEquals("Для пола " + sex + " наличие гривы должно быть " + expectedHasMane,
                     expectedHasMane, lion.doesHaveMane());
             assertEquals("Должно вернуться 1 котенок", 1, lion.getKittens());
-            
+
             List<String> food = lion.getFood();
             assertNotNull("Еда не должна быть null", food);
             assertTrue("Должна содержать 'Животные'", food.contains("Животные"));

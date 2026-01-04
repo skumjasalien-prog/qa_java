@@ -3,36 +3,32 @@ package com.example;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+
+import org.mockito.junit.MockitoJUnitRunner; 
 
 @RunWith(MockitoJUnitRunner.class)
 public class FelineTest {
 
     @Test
-    public void testGetKittens() {
+    public void testGetKittensReturnsDefaultOne() {
         Feline feline = new Feline();
-        int kittens = feline.getKittens();
-        
-        assertEquals("Должно вернуться 1 котенок по умолчанию", 1, kittens);
+        int result = feline.getKittens();
+        assertEquals("Должно вернуться 1 котенок по умолчанию", 1, result);
     }
 
     @Test
-    public void testGetKittensWithCount() {
+    public void testGetKittensWithCountReturnsCorrectNumber() {
         Feline feline = new Feline();
-        int kittens = feline.getKittens(5);
-        
-        assertEquals("Должно вернуться 5 котят", 5, kittens);
+        int result = feline.getKittens(5);
+        assertEquals("Должно вернуться 5 котят", 5, result);
     }
 
-    // Параметризованный тест для getKittens с разными значениями
     @RunWith(Parameterized.class)
     public static class GetKittensParameterizedTest {
         private final int input;
@@ -65,23 +61,39 @@ public class FelineTest {
     }
 
     @Test
-    public void testGetFamily() {
+    public void testGetFamilyReturnsKoshachie() {
         Feline feline = new Feline();
         String family = feline.getFamily();
-        
         assertEquals("Должно вернуться 'Кошачьи'", "Кошачьи", family);
     }
 
     @Test
-    public void testEatMeat() throws Exception {
+    public void testEatMeatIsNotNull() throws Exception {
         Feline feline = new Feline();
         List<String> food = feline.eatMeat();
-        
         assertNotNull("Еда не должна быть null", food);
+    }
+
+    @Test
+    public void testEatMeatHasCorrectSize() throws Exception {
+        Feline feline = new Feline();
+        List<String> food = feline.eatMeat();
         assertEquals("Должно быть 3 вида еды", 3, food.size());
+    }
+
+    @Test
+    public void FelineTest() throws Exception {
+        Feline feline = new Feline();
+        List<String> food = feline.eatMeat();
         assertTrue("Должна содержать 'Животные'", food.contains("Животные"));
         assertTrue("Должна содержать 'Птицы'", food.contains("Птицы"));
         assertTrue("Должна содержать 'Рыба'", food.contains("Рыба"));
+    }
+
+    @Test
+    public void testFelineIsInstanceOfAnimal() {
+        Feline feline = new Feline();
+        assertTrue("Feline должен наследоваться от Animal", feline instanceof Animal);
     }
 
     @Test
@@ -96,17 +108,6 @@ public class FelineTest {
         assertTrue("Feline должен реализовывать FelineBehavior", feline instanceof FelineBehavior);
     }
 
-
-    @Test
-    public void testEatMeatReturnsCorrectFood() throws Exception {
-        Feline feline = new Feline();
-        List<String> food = feline.eatMeat();
-        
-        List<String> expectedFood = List.of("Животные", "Птицы", "Рыба");
-        assertEquals("Должна вернуться правильная еда", expectedFood, food);
-    }
-
-    // Параметризованный тест для getFood с разными типами животных
     @RunWith(Parameterized.class)
     public static class GetFoodParameterizedTest {
         private final String animalKind;
@@ -131,9 +132,8 @@ public class FelineTest {
         }
 
         @Test
-        public void testGetFoodWithDifferentAnimalKinds() throws Exception {
+        public void testGetFoodForDifferentAnimals() throws Exception {
             Feline feline = new Feline();
-            
             if (shouldThrowException) {
                 try {
                     feline.getFood(animalKind);
@@ -152,10 +152,4 @@ public class FelineTest {
         }
     }
 
-    @Test
-    public void testFelineExtendsAnimal() {
-        Feline feline = new Feline();
-        assertTrue("Feline должен наследоваться от Animal", feline instanceof Animal);
-    }
 }
-

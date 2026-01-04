@@ -17,55 +17,77 @@ public class CatTest {
     private Predator predator;
 
     @Test
-    public void testGetSound() {
+    public void testGetSound_ReturnsМяу() {
         Cat cat = new Cat(new Feline());
         assertEquals("Должно вернуться 'Мяу'", "Мяу", cat.getSound());
     }
 
     @Test
-    public void testGetFoodWithMock() throws Exception {
+    public void testGetFoodWithMock_ReturnsExpectedFood() throws Exception {
         List<String> expectedFood = List.of("Мясо", "Рыба");
         when(predator.eatMeat()).thenReturn(expectedFood);
-        
-        // Используем рефлексию для установки мока
+
+        Cat cat = new Cat(new Feline());
+        // Используем рефлексию для внедрения мока
+        java.lang.reflect.Field field = Cat.class.getDeclaredField("predator");
+        field.setAccessible(true);
+        field.set(cat, predator);
+
+        List<String> food = cat.getFood();
+        assertEquals("Должна вернуться правильная еда", expectedFood, food);
+    }
+
+    @Test
+    public void testGetFoodWithMock_CallsEatMeat() throws Exception {
+        when(predator.eatMeat()).thenReturn(List.of("Мясо"));
+
         Cat cat = new Cat(new Feline());
         java.lang.reflect.Field field = Cat.class.getDeclaredField("predator");
         field.setAccessible(true);
         field.set(cat, predator);
-        
-        List<String> food = cat.getFood();
-        
-        assertEquals("Должна вернуться правильная еда", expectedFood, food);
+
+        cat.getFood();
         verify(predator, times(1)).eatMeat();
     }
 
     @Test
-    public void testGetFoodThrowsException() throws Exception {
+    public void testGetFoodWithMock_ThrowsException() throws Exception {
         when(predator.eatMeat()).thenThrow(new Exception("Ошибка получения мяса"));
-        
+
         Cat cat = new Cat(new Feline());
         java.lang.reflect.Field field = Cat.class.getDeclaredField("predator");
         field.setAccessible(true);
         field.set(cat, predator);
-        
+
         try {
             cat.getFood();
             fail("Должно было выброситься исключение");
         } catch (Exception e) {
             assertEquals("Ошибка получения мяса", e.getMessage());
         }
-        
-        verify(predator, times(1)).eatMeat();
     }
 
     @Test
-    public void testGetFoodWithRealFeline() throws Exception {
-        // Тест с реальным объектом Feline (без мока)
+    public void testGetFoodWithRealFeline_NotNull() throws Exception {
         Cat cat = new Cat(new Feline());
         List<String> food = cat.getFood();
-        
+
         assertNotNull("Еда не должна быть null", food);
+    }
+
+    @Test
+    public void testGetFoodWithRealFeline_NotEmpty() throws Exception {
+        Cat cat = new Cat(new Feline());
+        List<String> food = cat.getFood();
+
         assertFalse("Список еды не должен быть пустым", food.isEmpty());
+    }
+
+    @Test
+    public void testGetFoodWithRealFeline_ContainsAll() throws Exception {
+        Cat cat = new Cat(new Feline());
+        List<String> food = cat.getFood();
+
         assertTrue("Должна содержать 'Животные'", food.contains("Животные"));
         assertTrue("Должна содержать 'Птицы'", food.contains("Птицы"));
         assertTrue("Должна содержать 'Рыба'", food.contains("Рыба"));
@@ -73,19 +95,18 @@ public class CatTest {
     }
 
     @Test
-    public void testGetSoundMultipleTimes() {
+    public void testGetSoundMultipleTimes_ReturnsМяу() {
         Cat cat = new Cat(new Feline());
         assertEquals("Должно вернуться 'Мяу'", "Мяу", cat.getSound());
-        assertEquals("Должно вернуться 'Мяу' при повторном вызове", "Мяу", cat.getSound());
+        assertEquals("Должен возвращать 'Мяу' при повторных вызовах", "Мяу", cat.getSound());
     }
 
     @Test
-    public void testCatConstructor() {
+    public void testConstructor_CreatesCat() {
         Feline feline = new Feline();
         Cat cat = new Cat(feline);
-        
+
         assertNotNull("Cat должен быть создан", cat);
         assertEquals("Должно вернуться 'Мяу'", "Мяу", cat.getSound());
     }
 }
-
