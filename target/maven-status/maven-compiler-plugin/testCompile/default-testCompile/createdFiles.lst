@@ -1,8 +1,4 @@
 com\example\FelineTest.class
-com\example\FelineTest$GetKittensParameterizedTest.class
 com\example\AnimalTest.class
-com\example\LionTest$LionWithRealFelineParameterizedTest.class
-com\example\FelineTest$GetFoodParameterizedTest.class
 com\example\CatTest.class
-com\example\LionTest$LionManeParameterizedTest.class
 com\example\LionTest.class
