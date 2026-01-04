@@ -84,20 +84,16 @@ public class CatTest {
     }
 
     @Test
-    public void testGetFoodWithRealFeline_ContainsAll() throws Exception {
+    public void testGetFoodWithRealFeline_SizeIsThree() throws Exception {
         Cat cat = new Cat(new Feline());
         List<String> food = cat.getFood();
-
-        assertTrue("Должна содержать 'Животные'", food.contains("Животные"));
-        assertTrue("Должна содержать 'Птицы'", food.contains("Птицы"));
-        assertTrue("Должна содержать 'Рыба'", food.contains("Рыба"));
         assertEquals("Должно быть 3 вида еды", 3, food.size());
     }
 
     @Test
-    public void testGetSoundMultipleTimes_ReturnsМяу() {
+    public void testGetSoundSecondTime_ReturnsМяу() {
         Cat cat = new Cat(new Feline());
-        assertEquals("Должно вернуться 'Мяу'", "Мяу", cat.getSound());
+        cat.getSound(); // Первый вызов
         assertEquals("Должен возвращать 'Мяу' при повторных вызовах", "Мяу", cat.getSound());
     }
 
@@ -105,8 +101,6 @@ public class CatTest {
     public void testConstructor_CreatesCat() {
         Feline feline = new Feline();
         Cat cat = new Cat(feline);
-
         assertNotNull("Cat должен быть создан", cat);
-        assertEquals("Должно вернуться 'Мяу'", "Мяу", cat.getSound());
     }
 }

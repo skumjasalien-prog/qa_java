@@ -84,10 +84,10 @@ public class AnimalTest {
             assertNotNull("Семейство не должно быть null", family);
         }
 
-        @Test
-        public void testGetFamily_NotEmpty() {
-            Animal animal = new Animal();
-            String family = animal.getFamily();
-            assertTrue("Должно содержать информацию о семействах", family.length() > 0);
-        }
+    @Test
+    public void testGetFamily_NotEmpty() {
+        Animal animal = new Animal();
+        String family = animal.getFamily();
+        assertTrue("Должно содержать информацию о семействах", family.length() > 0);
     }
+}
